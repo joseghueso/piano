@@ -21,7 +21,7 @@ Es una app web instalable (PWA): no necesita Play Store, funciona sin conexión 
 
 ## Publicar con GitHub Pages
 
-El workflow `.github/workflows/pages.yml` publica la app al hacer push a `main`.
+El workflow `.github/workflows/pages.yml` publica la app al hacer push a la rama por defecto del repositorio.
 Activa una vez: **Settings → Pages → Source: GitHub Actions**.
 La app quedará en `https://<usuario>.github.io/piano/`.
 

@@ -4,19 +4,15 @@
 const MIDI_MIN = 21;  // A0
 const MIDI_MAX = 108; // C8
 const ZOOM_STEPS = [8, 11, 15, 22, 29]; // teclas blancas visibles
-const NAMES_EN = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const NAMES_ES = ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si'];
-const LABEL_MODES = ['es', 'en', 'off'];
-const LABEL_TEXT = { es: 'Do Re Mi', en: 'C D E', off: 'Notas' };
 
 const isBlack = (m) => [1, 3, 6, 8, 10].includes(m % 12);
 const octaveOf = (m) => Math.floor(m / 12) - 1;
-const nameOf = (m, mode) => (mode === 'es' ? NAMES_ES : NAMES_EN)[m % 12] + octaveOf(m);
+const nameOf = (m) => NAMES_ES[m % 12] + octaveOf(m);
 
 const settings = load({
   startOctave: 3,
   zoom: 2,
-  labels: 'es',
   sustain: false,
   haptics: false,
   volume: 0.8,
@@ -146,7 +142,6 @@ function visibleRange() {
 function render() {
   keyboard.innerHTML = '';
   keyEls.clear();
-  keyboard.classList.toggle('hide-labels', settings.labels === 'off');
 
   const keys = visibleRange();
   const whites = keys.filter((k) => !isBlack(k));
@@ -157,10 +152,6 @@ function render() {
     const el = document.createElement('div');
     el.className = 'key ' + (isBlack(m) ? 'black' : 'white');
     el.dataset.midi = m;
-    const label = document.createElement('span');
-    label.className = 'note-name' + (m % 12 === 0 ? ' c' : '');
-    label.textContent = nameOf(m, settings.labels);
-    el.appendChild(label);
 
     if (isBlack(m)) {
       const bw = w * 0.62;
@@ -177,7 +168,7 @@ function render() {
   const first = keys[0];
   const last = keys[keys.length - 1];
   document.getElementById('rangeLabel').textContent =
-    `${nameOf(first, settings.labels === 'es' ? 'es' : 'en')} – ${nameOf(last, settings.labels === 'es' ? 'es' : 'en')}`;
+    `${nameOf(first)} – ${nameOf(last)}`;
 }
 
 function press(midi) {
@@ -279,18 +270,6 @@ $('sustain').addEventListener('click', (e) => {
   save();
 });
 
-function syncLabelsButton() {
-  const btn = $('labels');
-  btn.textContent = LABEL_TEXT[settings.labels];
-  setToggle(btn, settings.labels !== 'off');
-}
-$('labels').addEventListener('click', () => {
-  settings.labels = LABEL_MODES[(LABEL_MODES.indexOf(settings.labels) + 1) % LABEL_MODES.length];
-  syncLabelsButton();
-  save();
-  render();
-});
-
 $('haptics').addEventListener('click', (e) => {
   settings.haptics = !settings.haptics;
   setToggle(e.currentTarget, settings.haptics);
@@ -331,7 +310,6 @@ document.addEventListener('visibilitychange', () => {
 setToggle($('sustain'), settings.sustain);
 setToggle($('haptics'), settings.haptics);
 $('volume').value = settings.volume;
-syncLabelsButton();
 render();
 
 if ('serviceWorker' in navigator) {

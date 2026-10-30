@@ -1,5 +1,5 @@
 // Caché para que la app funcione sin conexión
-const CACHE = 'piano-v2';
+const CACHE = 'piano-v1';
 const FILES = [
   './',
   'index.html',

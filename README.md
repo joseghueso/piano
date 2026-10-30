@@ -9,7 +9,7 @@ Es una app web instalable (PWA): no necesita Play Store, funciona sin conexión 
 - **Glissando**: desliza el dedo de una tecla a otra.
 - **Octavas** ◀ ▶ para moverte por todo el rango del piano (La0 – Do8).
 - **Zoom** − / + para ver de 8 a 29 teclas blancas.
-- **Sustain** (pedal), **vibración** al pulsar y **volumen**.
+- **Sustain** (pedal), **nombres de notas** (Do Re Mi / C D E / ocultos), **vibración** al pulsar y **volumen**.
 - Sonido sintetizado con Web Audio (sin archivos de audio, latencia baja).
 - Mantiene la pantalla encendida mientras tocas.
 
